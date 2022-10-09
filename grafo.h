@@ -23,4 +23,24 @@ char *getType(tGrafo *grafo);
 int getDim(tGrafo *grafo);
 char *getEdge(tGrafo *grafo);
 
+// Funções getters e setters (Vértice)
+
+void setX(tVertice *vertice, int x);
+void setY(tVertice *vertice, int y);
+void setPai(tVertice *vertice, int pai);
+
+int getX(tVertice *vertice);
+int getY(tVertice *vertice);
+int getPai(tVertice *vertice);
+
+// Funções getters e setters (Aresta)
+
+void setV1(tAresta *aresta, int v1);
+void setV2(tAresta *aresta, int v2);
+void setDist(tAresta *aresta, int dist);
+
+int getV1(tAresta *aresta);
+int getV2(tAresta *aresta);
+int getDist(tAresta *aresta);
+
 #endif

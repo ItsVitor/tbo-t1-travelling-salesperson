@@ -336,7 +336,7 @@ int getPai(tVertice *vertice)
  * @param aresta Aresta a ser modificada
  * @param v1 Índice do novo vértice v1
  */
-void setV1(tAresta *aresta, int v1)
+void setX(tVertice *vertice, int x)
 {
     aresta->v1 = v1;
 }
@@ -347,7 +347,7 @@ void setV1(tAresta *aresta, int v1)
  * @param aresta Aresta com v1
  * @return int
  */
-int getV1(tAresta *aresta)
+int getX(tVertice *vertice)
 {
     return aresta->v1;
 }
@@ -358,7 +358,7 @@ int getV1(tAresta *aresta)
  * @param aresta Aresta a ser modificada
  * @param v2 Índice do novo vértice v2
  */
-void setV2(tAresta *aresta, int v2)
+void setY(tVertice *vertice, int y)
 {
     aresta->v2 = v2;
 }
@@ -369,7 +369,7 @@ void setV2(tAresta *aresta, int v2)
  * @param aresta Aresta com v2
  * @return int
  */
-int getV2(tAresta *aresta)
+int getY(tVertice *vertice)
 {
     return aresta->v2;
 }
@@ -380,7 +380,7 @@ int getV2(tAresta *aresta)
  * @param aresta Aresta a ser modificada
  * @param dist Nova distância
  */
-void setDist(tAresta *aresta, int dist)
+void setPai(tVertice *vertice, int pai)
 {
     aresta->dist = dist;
 }
@@ -391,7 +391,7 @@ void setDist(tAresta *aresta, int dist)
  * @param aresta Aresta com a distância
  * @return int
  */
-int getDist(tAresta *aresta)
+int getPai(tVertice *vertice)
 {
     return aresta->dist;
 }
