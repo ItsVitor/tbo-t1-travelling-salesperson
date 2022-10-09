@@ -6,6 +6,7 @@ typedef struct stVertice tVertice;
 typedef struct stAresta tAresta;
 
 tGrafo *initGrafo();
+void freeGrafo(tGrafo *grafo);
 
 // Funções getters e setters (Grafo)
 
