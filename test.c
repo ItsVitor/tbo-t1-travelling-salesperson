@@ -4,7 +4,9 @@
 int main()
 {
 
-    tGrafo *grafo;
+    tGrafo *grafo = initGrafo();
+
+    freeGrafo(grafo);
 
     return 0;
 }

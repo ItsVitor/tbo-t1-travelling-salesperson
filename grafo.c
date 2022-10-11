@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "grafo.h"
 
 // ---------------------------- Structs ---------------------------- //
@@ -22,16 +23,16 @@ struct stGrafo
 
 struct stVertice
 {
-    int x;
-    int y;
+    float x;
+    float y;
     int pai; //Índice da lista de vértices que contém o pai dele.
 };
 
 struct stAresta
 {
-    int v1;   //Índice da lista de vértices que contém v1
-    int v2;   //Índice da lista de vértices que contém v2
-    int dist; // Peso ou Distância
+    tVertice *v1; // Vértice de origem
+    tVertice *v2; // Vértice de destino
+    float dist;   // Peso ou Distância
 };
 
 // ---------------------------- Funções ---------------------------- //
@@ -111,7 +112,8 @@ void freeVertice(tVertice *vertice)
  * @brief Destrói todos os vértices do vetor de vértices, e o anula
  *
  * @param grafo Grafo com o vetor de vértices
- * @post campo do vetor de vértices aponta para NULL
+ * @pre Vetor de vértice não é um ponteiro para lixo
+ * @post Campo do vetor de vértices aponta para NULL
  */
 static void freeVertices(tGrafo *grafo)
 {
@@ -141,8 +143,8 @@ tAresta *initAresta(tVertice *v1, tVertice *v2)
     aresta->v2 = v2;
 
     // distância == sqrt( (x1 - x2)² + (y1 - y2)² )
-    int x = getX(v1) - getX(v2);
-    int y = getY(v1) - getY(v2);
+    float x = getX(v1) - getX(v2);
+    float y = getY(v1) - getY(v2);
 
     aresta->dist = sqrt(x * x + y * y);
 
@@ -283,13 +285,18 @@ int getSizeArestas(tGrafo *grafo)
 
 /**
  * @brief Muda o nome do grafo
+ * @warning A função não desaloca a string anterior.
  *
  * @param grafo Grafo a ser modificado
  * @param name Novo nome
  */
 void setName(tGrafo *grafo, char *name)
 {
-    grafo->name = strdup(name);
+    if (!name)
+        grafo->name = NULL;
+
+    else
+        grafo->name = strdup(name);
 }
 
 /**
@@ -301,18 +308,26 @@ void setName(tGrafo *grafo, char *name)
  */
 char *getName(tGrafo *grafo)
 {
+    if (!grafo->name)
+        return NULL;
+
     return strdup(grafo->name);
 }
 
 /**
  * @brief Muda o comentário do grafo
+ * @warning A função não desaloca a string anterior.
  *
  * @param grafo Grafo a ser modificado
  * @param comment Novo comentário
  */
 void setComment(tGrafo *grafo, char *comment)
 {
-    grafo->comment = strdup(comment);
+    if (!comment)
+        grafo->comment = NULL;
+
+    else
+        grafo->comment = strdup(comment);
 }
 
 /**
@@ -324,18 +339,26 @@ void setComment(tGrafo *grafo, char *comment)
  */
 char *getComment(tGrafo *grafo)
 {
+    if (!grafo->comment)
+        return NULL;
+
     return strdup(grafo->comment);
 }
 
 /**
  * @brief Muda o tipo do grafo
+ * @warning A função não desaloca a string anterior.
  *
  * @param grafo Grafo a ser modificado
  * @param type Novo tipo
  */
 void setType(tGrafo *grafo, char *type)
 {
-    grafo->type = strdup(type);
+    if (!type)
+        grafo->type = NULL;
+
+    else
+        grafo->type = strdup(type);
 }
 
 /**
@@ -347,6 +370,9 @@ void setType(tGrafo *grafo, char *type)
  */
 char *getType(tGrafo *grafo)
 {
+    if (!grafo->type)
+        return NULL;
+
     return strdup(grafo->type);
 }
 
@@ -374,13 +400,18 @@ int getDim(tGrafo *grafo)
 
 /**
  * @brief Muda o parâmetro EDGE_WEIGHT_TYPE
+ * @warning A função não desaloca a string anterior.
  *
  * @param grafo Grafo a ser modificado
  * @param edge Novo EDGE_WEIGHT_TYPE
  */
 void setEdge(tGrafo *grafo, char *edge)
 {
-    grafo->edge_weight_type = strdup(edge);
+    if (!edge)
+        grafo->edge_weight_type = NULL;
+
+    else
+        grafo->edge_weight_type = strdup(edge);
 }
 
 /**
@@ -392,6 +423,9 @@ void setEdge(tGrafo *grafo, char *edge)
  */
 char *getEdge(tGrafo *grafo)
 {
+    if (!grafo->edge_weight_type)
+        return NULL;
+
     return strdup(grafo->edge_weight_type);
 }
 
@@ -430,7 +464,7 @@ tVertice *getVertice(tGrafo *grafo, int indice)
  * @param vertice Vértice a ser modificado
  * @param x Nova coordenada x
  */
-void setX(tVertice *vertice, int x)
+void setX(tVertice *vertice, float x)
 {
     vertice->x = x;
 }
@@ -439,9 +473,9 @@ void setX(tVertice *vertice, int x)
  * @brief Pega a coordenada x do vértice
  *
  * @param vertice Vértice com a coordenada x
- * @return int
+ * @return float
  */
-int getX(tVertice *vertice)
+float getX(tVertice *vertice)
 {
     return vertice->x;
 }
@@ -452,7 +486,7 @@ int getX(tVertice *vertice)
  * @param vertice Vértice a ser modificado
  * @param y Nova coordenada y
  */
-void setY(tVertice *vertice, int y)
+void setY(tVertice *vertice, float y)
 {
     vertice->y = y;
 }
@@ -461,9 +495,9 @@ void setY(tVertice *vertice, int y)
  * @brief Pega a coordenada y do vértice
  *
  * @param vertice Vértice com a coordenada y
- * @return int
+ * @return float
  */
-int getY(tVertice *vertice)
+float getY(tVertice *vertice)
 {
     return vertice->y;
 }
@@ -514,7 +548,7 @@ void setAresta(tGrafo *grafo, int indice, tAresta *aresta)
 tAresta *getAresta(tGrafo *grafo, int indice)
 {
     if (indice >= getSizeArestas(grafo) || indice < 0)
-        exit(1);
+        exit(2);
 
     return grafo->arestas[indice];
 }
@@ -523,20 +557,20 @@ tAresta *getAresta(tGrafo *grafo, int indice)
  * @brief Muda o vértice v1 da aresta
  *
  * @param aresta Aresta a ser modificada
- * @param v1 Índice do novo vértice v1
+ * @param v1 Novo vértice v1
  */
-void setV1(tAresta *aresta, int v1)
+void setV1(tAresta *aresta, tVertice *v1)
 {
     aresta->v1 = v1;
 }
 
 /**
- * @brief Pega o índice do vértice v1 da aresta
+ * @brief Pega o vértice v1 da aresta
  *
  * @param aresta Aresta com v1
- * @return int
+ * @return tVertice*
  */
-int getV1(tAresta *aresta)
+tVertice *getV1(tAresta *aresta)
 {
     return aresta->v1;
 }
@@ -545,20 +579,20 @@ int getV1(tAresta *aresta)
  * @brief Muda o vértice v2 da aresta
  *
  * @param aresta Aresta a ser modificada
- * @param v2 Índice do novo vértice v2
+ * @param v2 Novo vértice v2
  */
-void setV2(tAresta *aresta, int v2)
+void setV2(tAresta *aresta, tVertice *v2)
 {
     aresta->v2 = v2;
 }
 
 /**
- * @brief Pega o índice do vértice v2 da aresta
+ * @brief Pega o vértice v2 da aresta
  *
  * @param aresta Aresta com v2
- * @return int
+ * @return tVertice*
  */
-int getV2(tAresta *aresta)
+tVertice *getV2(tAresta *aresta)
 {
     return aresta->v2;
 }
@@ -569,7 +603,7 @@ int getV2(tAresta *aresta)
  * @param aresta Aresta a ser modificada
  * @param dist Nova distância
  */
-void setDist(tAresta *aresta, int dist)
+void setDist(tAresta *aresta, float dist)
 {
     aresta->dist = dist;
 }
@@ -578,9 +612,9 @@ void setDist(tAresta *aresta, int dist)
  * @brief Pega a distância da aresta
  *
  * @param aresta Aresta com a distância
- * @return int
+ * @return float
  */
-int getDist(tAresta *aresta)
+float getDist(tAresta *aresta)
 {
     return aresta->dist;
 }

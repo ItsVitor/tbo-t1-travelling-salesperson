@@ -37,22 +37,26 @@ int getSizeArestas(tGrafo *grafo);
 
 // Funções getters e setters (Vértice)
 
-void setX(tVertice *vertice, int x);
-void setY(tVertice *vertice, int y);
+void setVertice(tGrafo *grafo, int indice, tVertice *vertice);
+void setX(tVertice *vertice, float x);
+void setY(tVertice *vertice, float y);
 void setPai(tVertice *vertice, int pai);
 
-int getX(tVertice *vertice);
-int getY(tVertice *vertice);
+tVertice *getVertice(tGrafo *grafo, int indice);
+float getX(tVertice *vertice);
+float getY(tVertice *vertice);
 int getPai(tVertice *vertice);
 
 // Funções getters e setters (Aresta)
 
-void setV1(tAresta *aresta, int v1);
-void setV2(tAresta *aresta, int v2);
-void setDist(tAresta *aresta, int dist);
+void setAresta(tGrafo *grafo, int indice, tAresta *aresta);
+void setV1(tAresta *aresta, tVertice *v1);
+void setV2(tAresta *aresta, tVertice *v2);
+void setDist(tAresta *aresta, float dist);
 
-int getV1(tAresta *aresta);
-int getV2(tAresta *aresta);
-int getDist(tAresta *aresta);
+tAresta *getAresta(tGrafo *grafo, int indice);
+tVertice *getV1(tAresta *aresta);
+tVertice *getV2(tAresta *aresta);
+float getDist(tAresta *aresta);
 
 #endif
