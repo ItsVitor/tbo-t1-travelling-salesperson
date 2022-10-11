@@ -133,6 +133,15 @@ tAresta *initAresta(tVertice *v1, tVertice *v2)
     return aresta;
 }
 
+void initArestas(tGrafo *grafo)
+{
+    for (int i = 0; i < grafo->sizeVertices; i++)
+    {
+        // i + 1 para não criar aresta consigo mesmo
+        for (int j = i + 1; i < grafo->sizeVertices; j++)
+    }
+}
+
 /**
  * @brief Destrói a aresta
  *
@@ -269,6 +278,7 @@ int getSizeArestas(tGrafo *grafo)
 
 /**
  * @brief Muda o vértice na posição do vetor indicada
+ * @details Coloca o próprio índice como pai
  *
  * @param grafo Grafo com o vetor de vértices
  * @param indice Posição a ser modificada
@@ -276,6 +286,7 @@ int getSizeArestas(tGrafo *grafo)
  */
 void setVertice(tGrafo *grafo, int indice, tVertice *vertice)
 {
+    setPai(vertice, indice);
     grafo->vertices[indice] = vertice;
 }
 
