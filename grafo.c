@@ -8,13 +8,6 @@
 
 struct stGrafo
 {
-    char *name;
-    char *comment;
-    char *type;
-    int dim;
-    char *edge_weight_type;
-
-    // Aqui são as partes que usaremos mais
     tVertice **vertices;
     tAresta **arestas;
 
@@ -54,12 +47,6 @@ tGrafo *initGrafo()
 {
     tGrafo *grafo = (tGrafo *)calloc(1, sizeof(tGrafo));
 
-    setName(grafo, NULL);
-    setComment(grafo, NULL);
-    setType(grafo, NULL);
-    setDim(grafo, 0);
-    setEdge(grafo, NULL);
-
     // Anula tanto vetor vértice quanto vetor aresta
     setSizeVertices(grafo, 0);
 
@@ -73,11 +60,6 @@ tGrafo *initGrafo()
  */
 void freeGrafo(tGrafo *grafo)
 {
-    free(grafo->name);
-    free(grafo->comment);
-    free(grafo->type);
-    free(grafo->edge_weight_type);
-
     freeVertices(grafo);
     freeArestas(grafo);
 
@@ -282,152 +264,6 @@ int getSizeArestas(tGrafo *grafo)
  * Já se sabe como elas são só pelo grafo.h. Não precisa ler.                      *
  * Os comentários abaixo explicam a função ao usá-la.                              *
  ***********************************************************************************/
-
-/**
- * @brief Muda o nome do grafo
- * @warning A função não desaloca a string anterior.
- *
- * @param grafo Grafo a ser modificado
- * @param name Novo nome
- */
-void setName(tGrafo *grafo, char *name)
-{
-    if (!name)
-        grafo->name = NULL;
-
-    else
-        grafo->name = strdup(name);
-}
-
-/**
- * @brief Pega o nome do grafo
- * @details Tecnicamente uma cópia do nome
- *
- * @param grafo Grafo com o nome
- * @return char*
- */
-char *getName(tGrafo *grafo)
-{
-    if (!grafo->name)
-        return NULL;
-
-    return strdup(grafo->name);
-}
-
-/**
- * @brief Muda o comentário do grafo
- * @warning A função não desaloca a string anterior.
- *
- * @param grafo Grafo a ser modificado
- * @param comment Novo comentário
- */
-void setComment(tGrafo *grafo, char *comment)
-{
-    if (!comment)
-        grafo->comment = NULL;
-
-    else
-        grafo->comment = strdup(comment);
-}
-
-/**
- * @brief Pega o comentário do grafo
- * @details Tecnicamente uma cópia do comentário
- *
- * @param grafo Grafo com o comentário
- * @return char*
- */
-char *getComment(tGrafo *grafo)
-{
-    if (!grafo->comment)
-        return NULL;
-
-    return strdup(grafo->comment);
-}
-
-/**
- * @brief Muda o tipo do grafo
- * @warning A função não desaloca a string anterior.
- *
- * @param grafo Grafo a ser modificado
- * @param type Novo tipo
- */
-void setType(tGrafo *grafo, char *type)
-{
-    if (!type)
-        grafo->type = NULL;
-
-    else
-        grafo->type = strdup(type);
-}
-
-/**
- * @brief Pega o tipo do grafo
- * @details Tecnicamente uma cópia do tipo
- *
- * @param grafo Grafo com o tipo
- * @return char*
- */
-char *getType(tGrafo *grafo)
-{
-    if (!grafo->type)
-        return NULL;
-
-    return strdup(grafo->type);
-}
-
-/**
- * @brief Muda a dimensão do grafo
- *
- * @param grafo Grafo a ser modificado
- * @param dim Nova dimensão
- */
-void setDim(tGrafo *grafo, int dim)
-{
-    grafo->dim = dim;
-}
-
-/**
- * @brief Pega a dimensão do grafo
- *
- * @param grafo Grafo com a dimensão
- * @return int
- */
-int getDim(tGrafo *grafo)
-{
-    return grafo->dim;
-}
-
-/**
- * @brief Muda o parâmetro EDGE_WEIGHT_TYPE
- * @warning A função não desaloca a string anterior.
- *
- * @param grafo Grafo a ser modificado
- * @param edge Novo EDGE_WEIGHT_TYPE
- */
-void setEdge(tGrafo *grafo, char *edge)
-{
-    if (!edge)
-        grafo->edge_weight_type = NULL;
-
-    else
-        grafo->edge_weight_type = strdup(edge);
-}
-
-/**
- * @brief Pega o EDGE_WEIGHT_TYPE do grafo
- * @details Tecnicamente uma cópia do EDGE_WEIGHT_TYPE
- *
- * @param grafo Grafo com o EDGE_WEIGHT_TYPE
- * @return char*
- */
-char *getEdge(tGrafo *grafo)
-{
-    if (!grafo->edge_weight_type)
-        return NULL;
-
-    return strdup(grafo->edge_weight_type);
-}
 
 // ========= Getters e Setters do vértice ========= //
 
