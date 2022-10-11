@@ -6,14 +6,17 @@ typedef struct stVertice tVertice;
 typedef struct stAresta tAresta;
 
 // Funções do grafo
+
 tGrafo *initGrafo();
 void freeGrafo(tGrafo *grafo);
 
 // Funções do vértice
+
 tVertice *initVertice();
 void freeVertice(tVertice *vertice);
 
 // Funções da aresta
+
 tAresta *initAresta(tVertice *v1, tVertice *v2);
 void freeAresta(tAresta *aresta);
 void sortArestas(tGrafo *grafo);
