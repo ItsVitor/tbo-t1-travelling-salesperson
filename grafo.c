@@ -151,7 +151,7 @@ void initAllArestas(tGrafo *grafo)
         v1 = getVertice(grafo, i);
 
         // i + 1 para não criar aresta consigo mesmo
-        for (int j = i + 1; i < getSizeVertices(grafo); j++)
+        for (int j = i + 1; j < getSizeVertices(grafo); j++)
         {
             v2 = getVertice(grafo, j);
             aresta = initAresta(v1, v2);
