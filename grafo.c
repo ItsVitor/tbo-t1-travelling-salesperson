@@ -133,12 +133,34 @@ tAresta *initAresta(tVertice *v1, tVertice *v2)
     return aresta;
 }
 
-void initArestas(tGrafo *grafo)
+/**
+ * @brief Cria todas as arestas possíveis do grafo
+ *
+ * @param grafo Grafo com os vértices
+ * @pre Vetor de vértices completamente preenchido
+ * @post Vetor de arestas completamente preenchido
+ */
+void initAllArestas(tGrafo *grafo)
 {
-    for (int i = 0; i < grafo->sizeVertices; i++)
+    tVertice *v1, *v2;
+    tAresta *aresta;
+    int indice = 0;
+
+    for (int i = 0; i < getSizeVertices(grafo); i++)
     {
+        v1 = getVertice(grafo, i);
+
         // i + 1 para não criar aresta consigo mesmo
-        for (int j = i + 1; i < grafo->sizeVertices; j++)
+        for (int j = i + 1; i < getSizeVertices(grafo); j++)
+        {
+            v2 = getVertice(grafo, j);
+            aresta = initAresta(v1, v2);
+
+            setAresta(grafo, indice, aresta);
+
+            // Toda vez que uma aresta é criada, o índice avança em 1
+            indice++;
+        }
     }
 }
 

@@ -5,20 +5,19 @@ typedef struct stGrafo tGrafo;
 typedef struct stVertice tVertice;
 typedef struct stAresta tAresta;
 
-// Funções do grafo
+// Funções inicializadoras / liberadoras
 
 tGrafo *initGrafo();
-void freeGrafo(tGrafo *grafo);
-
-// Funções do vértice
-
 tVertice *initVertice();
-void freeVertice(tVertice *vertice);
-
-// Funções da aresta
-
 tAresta *initAresta(tVertice *v1, tVertice *v2);
+
+void freeGrafo(tGrafo *grafo);
+void freeVertice(tVertice *vertice);
 void freeAresta(tAresta *aresta);
+
+// Funções gerais
+
+void initAllArestas(tGrafo *grafo);
 void sortArestas(tGrafo *grafo);
 
 // Funções getters e setters (Grafo)
