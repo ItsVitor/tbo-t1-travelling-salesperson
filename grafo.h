@@ -9,7 +9,7 @@ typedef struct stAresta tAresta;
 
 tGrafo *initGrafo();
 tVertice *initVertice();
-tAresta *initAresta(tVertice *v1, tVertice *v2);
+tAresta *initAresta(tGrafo *grafo, int indice1, int indice2);
 
 void freeGrafo(tGrafo *grafo);
 void freeVertice(tVertice *vertice);
@@ -42,13 +42,13 @@ int getPai(tVertice *vertice);
 // Funções getters e setters (Aresta)
 
 void setAresta(tGrafo *grafo, int indice, tAresta *aresta);
-void setV1(tAresta *aresta, tVertice *v1);
-void setV2(tAresta *aresta, tVertice *v2);
+void setV1(tAresta *aresta, int v1);
+void setV2(tAresta *aresta, int v2);
 void setDist(tAresta *aresta, float dist);
 
 tAresta *getAresta(tGrafo *grafo, int indice);
-tVertice *getV1(tAresta *aresta);
-tVertice *getV2(tAresta *aresta);
+int getV1(tAresta *aresta);
+int getV2(tAresta *aresta);
 float getDist(tAresta *aresta);
 
 #endif

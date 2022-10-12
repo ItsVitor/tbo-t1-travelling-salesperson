@@ -23,9 +23,9 @@ struct stVertice
 
 struct stAresta
 {
-    tVertice *v1; // Vértice de origem
-    tVertice *v2; // Vértice de destino
-    float dist;   // Peso ou Distância
+    int v1;     // Índice do vértice de origem
+    int v2;     // Índice do vértice de destino
+    float dist; // Peso ou Distância
 };
 
 // ---------------------------- Funções ---------------------------- //
@@ -113,16 +113,20 @@ static void freeVertices(tGrafo *grafo)
  * @brief Cria um tipo tAresta conectando dois vértices
  * @details Sendo um grafo não-direcionado, ser destino ou origem não importa.
  *
- * @param v1 Vértice origem da aresta
- * @param v2 Vértice destino da aresta
+ * @param grafo Grafo com o vetor de vértices
+ * @param indice1 Índice do vértice origem
+ * @param indice2 Índice do vértice destino
  * @return tAresta*
  */
-tAresta *initAresta(tVertice *v1, tVertice *v2)
+tAresta *initAresta(tGrafo *grafo, int indice1, int indice2)
 {
     tAresta *aresta = (tAresta *)calloc(1, sizeof(tAresta));
 
-    aresta->v1 = v1;
-    aresta->v2 = v2;
+    aresta->v1 = indice1;
+    aresta->v2 = indice2;
+
+    tVertice *v1 = getVertice(grafo, indice1);
+    tVertice *v2 = getVertice(grafo, indice2);
 
     // distância == sqrt( (x1 - x2)² + (y1 - y2)² )
     float x = getX(v1) - getX(v2);
@@ -142,19 +146,15 @@ tAresta *initAresta(tVertice *v1, tVertice *v2)
  */
 void initAllArestas(tGrafo *grafo)
 {
-    tVertice *v1, *v2;
     tAresta *aresta;
     int indice = 0;
 
     for (int i = 0; i < getSizeVertices(grafo); i++)
     {
-        v1 = getVertice(grafo, i);
-
         // i + 1 para não criar aresta consigo mesmo
         for (int j = i + 1; j < getSizeVertices(grafo); j++)
         {
-            v2 = getVertice(grafo, j);
-            aresta = initAresta(v1, v2);
+            aresta = initAresta(grafo, i, j);
 
             setAresta(grafo, indice, aresta);
 
@@ -201,7 +201,7 @@ static void freeArestas(tGrafo *grafo)
 static int compAresta(const void *aresta_1, const void *aresta_2)
 {
     // Qsort pega o endereço dos elementos. Como os elementos são do tipo tAresta * , o endereço deles são tAresta **
-    // Depois de indicar isso, pego os elementos em si fazendo *() nesses endereços tAresta **
+    // Depois de especificar isso, pego os elementos em si usando * à esquerda desses endereços tAresta **
     tAresta *a1 = *(tAresta **)aresta_1;
     tAresta *a2 = *(tAresta **)aresta_2;
 
@@ -426,20 +426,20 @@ tAresta *getAresta(tGrafo *grafo, int indice)
  * @brief Muda o vértice v1 da aresta
  *
  * @param aresta Aresta a ser modificada
- * @param v1 Novo vértice v1
+ * @param v1 Índice do novo vértice v1
  */
-void setV1(tAresta *aresta, tVertice *v1)
+void setV1(tAresta *aresta, int v1)
 {
     aresta->v1 = v1;
 }
 
 /**
- * @brief Pega o vértice v1 da aresta
+ * @brief Pega o índice do vértice v1 da aresta
  *
  * @param aresta Aresta com v1
- * @return tVertice*
+ * @return int
  */
-tVertice *getV1(tAresta *aresta)
+int getV1(tAresta *aresta)
 {
     return aresta->v1;
 }
@@ -448,20 +448,20 @@ tVertice *getV1(tAresta *aresta)
  * @brief Muda o vértice v2 da aresta
  *
  * @param aresta Aresta a ser modificada
- * @param v2 Novo vértice v2
+ * @param v2 Índice do novo vértice v2
  */
-void setV2(tAresta *aresta, tVertice *v2)
+void setV2(tAresta *aresta, int v2)
 {
     aresta->v2 = v2;
 }
 
 /**
- * @brief Pega o vértice v2 da aresta
+ * @brief Pega o índice do vértice v2 da aresta
  *
  * @param aresta Aresta com v2
- * @return tVertice*
+ * @return int
  */
-tVertice *getV2(tAresta *aresta)
+int getV2(tAresta *aresta)
 {
     return aresta->v2;
 }
