@@ -69,13 +69,18 @@ void freeGrafo(tGrafo *grafo)
 // =========== Funções do Vértice =========== //
 
 /**
- * @brief Cria um tipo tVertice zerado
+ * @brief Cria um tipo tVertice
  *
+ * @param x Coordenada x do vértice
+ * @param y Coordenada y do vértice
  * @return tVertice*
  */
-tVertice *initVertice()
+tVertice *initVertice(float x, float y)
 {
     tVertice *vertice = (tVertice *)calloc(1, sizeof(tVertice));
+
+    setX(vertice, x);
+    setY(vertice, y);
 
     return vertice;
 }

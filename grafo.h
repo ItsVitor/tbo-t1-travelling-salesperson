@@ -8,7 +8,7 @@ typedef struct stAresta tAresta;
 // Funções inicializadoras / liberadoras
 
 tGrafo *initGrafo();
-tVertice *initVertice();
+tVertice *initVertice(float x, float y);
 tAresta *initAresta(tGrafo *grafo, int indice1, int indice2);
 
 void freeGrafo(tGrafo *grafo);
