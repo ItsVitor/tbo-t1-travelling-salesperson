@@ -37,7 +37,7 @@ tAresta *initAresta(tGrafo *grafo, int indice1, int indice2);
 // Funções liberadoras
 
 /**
- * @brief Destrói o grafo
+ * @brief Destrói o grafo e seus elementos
  *
  * @param grafo Grafo a ser liberado
  */
