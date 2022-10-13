@@ -53,6 +53,9 @@ int main()
 
     // -------------------------(Término da leitura)------------------------- //
 
+    initAllArestas(grafo);
+    sortArestas(grafo);
+
     freeGrafo(grafo);
 
     return 0;
