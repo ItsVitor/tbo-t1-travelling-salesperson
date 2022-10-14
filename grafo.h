@@ -60,6 +60,16 @@ void freeAresta(tAresta *aresta);
 // Funções gerais
 
 /**
+ * @brief Pega o índice do vértice raíz
+ * @details Usa o método Quick-Union na procura. O "weighted" é trabalho da função que une.
+ *
+ * @param grafo Grafo com o vetor de vértices
+ * @param indice Índice do vértice filho
+ * @return int
+ */
+int root(tGrafo *grafo, int indice);
+
+/**
  * @brief Cria todas as arestas possíveis do grafo
  *
  * @param grafo Grafo com os vértices

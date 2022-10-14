@@ -90,6 +90,25 @@ static void freeVertices(tGrafo *grafo)
     grafo->vertices = NULL;
 }
 
+int root(tGrafo *grafo, int indice)
+{
+    tVertice *vf = getVertice(grafo, indice);
+    tVertice *vp = getVertice(grafo, getPai(vf));
+
+    // Checa se filho != pai (vê se o endereço dos ponteiros é diferente)
+    while (vf != vp)
+    {
+        setPai(vf, getPai(vp));
+
+        // O pai agora é visto como o próximo filho
+        vf = vp;
+        vp = getVertice(grafo, getPai(vp));
+    }
+
+    // Vértice raíz tem ele mesmo como pai (getPai(vp) também funcionaria)
+    return getPai(vf);
+}
+
 // =========== Funções da Aresta =========== //
 
 tAresta *initAresta(tGrafo *grafo, int indice1, int indice2)
