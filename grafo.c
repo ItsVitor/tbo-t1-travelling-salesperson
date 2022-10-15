@@ -247,7 +247,7 @@ int getSizeArestas(tGrafo *grafo)
 
 /******************** Parte simples de Getters e Setters abaixo ********************
  * Já se sabe como elas são só pelo grafo.h. Não precisa ler.                      *
- * Os comentários abaixo explicam a função ao usá-la.                              *
+ * Os nomes abaixo explicam a função.                                              *
  ***********************************************************************************/
 
 // ========= Getters e Setters do vértice ========= //
