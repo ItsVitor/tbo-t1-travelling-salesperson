@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "grafo.h"
+#include "UF.h"
 
 // ---------------------------- Structs ---------------------------- //
 
@@ -35,6 +36,7 @@ struct stAresta
 static void freeVertices(tGrafo *grafo);
 static void freeArestas(tGrafo *grafo);
 static int compAresta(const void *aresta_1, const void *aresta_2);
+static int isEmptyArestas(tAresta ** arestas_array);
 
 // =========== Funções do Grafo =========== //
 
@@ -109,6 +111,30 @@ int root(tGrafo *grafo, int indice)
     return getPai(vf);
 }
 
+/**
+ * @brief 
+ *
+ * @param grafo 
+ * @pre 
+ * @post 
+ */
+tUF * kruskalAlgorithm(tGrafo * grafo) 
+{
+    tUF * F = InitUnionFind(grafo->sizeVertices);
+    tAresta ** S = grafo->arestas;
+
+    while(!isEmpty(S) && !isSpanning(F))
+    {
+        tAresta * menorAresta = removeFirst(S);
+        if (!IsConnected(F, menorAresta->v1, menorAresta->v2))
+        {
+            Union(F, menorAresta->v1, menorAresta->v2);
+        }
+    }
+
+    return F;
+}
+
 // =========== Funções da Aresta =========== //
 
 tAresta *initAresta(tGrafo *grafo, int indice1, int indice2)
@@ -169,6 +195,17 @@ static void freeArestas(tGrafo *grafo)
     free(grafo->arestas);
 
     grafo->arestas = NULL;
+}
+
+static int isEmptyArestas(tAresta ** arestas_array){
+    // TODO
+}
+
+void imprimeArestas(tGrafo * grafo)
+{
+    for (int i = 0; i < getSizeArestas(grafo); i++){
+        printf("%f ", getDist(grafo->arestas[i]));
+    }
 }
 
 /**

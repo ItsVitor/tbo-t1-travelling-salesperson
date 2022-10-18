@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "grafo.h"
+#include "UF.h"
 
 void readFileHeader(FILE *arq, tGrafo *grafo, char *name, int *dimension);
 
@@ -9,7 +10,7 @@ int main()
     char name[50];
     int dimension = 0;
 
-    char path[] = "exemplos/in/a280.tsp";
+    char path[] = "exemplos/in/simples3.tsp";
 
     FILE *arq = fopen(path, "r");
 
@@ -55,6 +56,13 @@ int main()
 
     initAllArestas(grafo);
     sortArestas(grafo);
+
+    imprimeArestas(grafo);
+
+    // ------------------------- (Execução do Algoritmo)------------------------- //
+
+    // De acordo com o algoritmo disponível em 
+    // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 
     freeGrafo(grafo);
 

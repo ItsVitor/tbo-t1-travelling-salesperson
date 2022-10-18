@@ -1,6 +1,8 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 
+#include "UF.h"
+
 typedef struct stGrafo tGrafo;
 typedef struct stVertice tVertice;
 typedef struct stAresta tAresta;
@@ -84,6 +86,10 @@ void initAllArestas(tGrafo *grafo);
  * @param grafo Grafo com as arestas
  */
 void sortArestas(tGrafo *grafo);
+
+void imprimeArestas(tGrafo * grafo);
+
+tUF * kruskalAlgorithm(tGrafo * grafo); 
 
 // Funções getters e setters (Grafo)
 
