@@ -36,7 +36,6 @@ struct stAresta
 static void freeVertices(tGrafo *grafo);
 static void freeArestas(tGrafo *grafo);
 static int compAresta(const void *aresta_1, const void *aresta_2);
-static int isEmptyArestas(tAresta ** arestas_array);
 
 // =========== Funções do Grafo =========== //
 
@@ -123,14 +122,23 @@ tUF * kruskalAlgorithm(tGrafo * grafo)
     tUF * F = InitUnionFind(grafo->sizeVertices);
     tAresta ** S = grafo->arestas;
 
-    while(!isEmpty(S) && !isSpanning(F))
+    FILE * fMST = fopen("./teste.txt", "w");
+
+    int i = 0;
+    float pesoTotalMST = 0;
+    while(/* !isEmpty(S) */ i < getSizeArestas(grafo) && !isSpanning(F))
     {
-        tAresta * menorAresta = removeFirst(S);
+        tAresta * menorAresta = S[i++];
         if (!IsConnected(F, menorAresta->v1, menorAresta->v2))
         {
             Union(F, menorAresta->v1, menorAresta->v2);
+            fprintf(fMST, "%d %d\n", menorAresta->v1 + 1, menorAresta->v2 + 1);
+            pesoTotalMST += menorAresta->dist;
         }
     }
+    fprintf(fMST, "peso total MST: %f\n", pesoTotalMST);
+
+    fclose(fMST);
 
     return F;
 }
@@ -195,10 +203,6 @@ static void freeArestas(tGrafo *grafo)
     free(grafo->arestas);
 
     grafo->arestas = NULL;
-}
-
-static int isEmptyArestas(tAresta ** arestas_array){
-    // TODO
 }
 
 void imprimeArestas(tGrafo * grafo)
