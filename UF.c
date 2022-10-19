@@ -28,6 +28,12 @@ tUF * InitUnionFind(int size){
     return new_UF;
 }
 
+void freeUnionFind(tUF * u){
+    free(u->itens);
+    free(u->num_objs);
+    free(u);
+}
+
 int IsConnected(tUF * u, int p, int q){
     return GetRoot(u, p) == GetRoot(u, q);
 }
