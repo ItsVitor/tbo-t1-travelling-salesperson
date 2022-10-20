@@ -117,12 +117,10 @@ int root(tGrafo *grafo, int indice)
  * @pre 
  * @post 
  */
-tUF * kruskalAlgorithm(tGrafo * grafo) 
+tUF * kruskalAlgorithm(tGrafo * grafo, FILE * wFile) 
 {
     tUF * F = InitUnionFind(grafo->sizeVertices);
     tAresta ** S = grafo->arestas;
-
-    FILE * fMST = fopen("./teste.txt", "w");
 
     int i = 0;
     float pesoTotalMST = 0;
@@ -132,13 +130,10 @@ tUF * kruskalAlgorithm(tGrafo * grafo)
         if (!IsConnected(F, menorAresta->v1, menorAresta->v2))
         {
             Union(F, menorAresta->v1, menorAresta->v2);
-            fprintf(fMST, "%d %d\n", menorAresta->v1 + 1, menorAresta->v2 + 1);
+            fprintf(wFile, "%d %d\n", menorAresta->v1 + 1, menorAresta->v2 + 1);
             pesoTotalMST += menorAresta->dist;
         }
     }
-    fprintf(fMST, "peso total MST: %f\n", pesoTotalMST);
-
-    fclose(fMST);
 
     return F;
 }

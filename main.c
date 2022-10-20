@@ -63,35 +63,16 @@ int main()
 
     // ------------------------- (Execução do Algoritmo)------------------------- //
 
-    // Calcula peso da MST do professor
-    char path2[] = "exemplos/mst/berlin52.mst";
-    FILE *fArqMST = fopen(path2, "r");
-    float pesoProfessorMST = 0;
-
-    fscanf(fArqMST, " %*s %s", name);
-    fscanf(fArqMST, " %*[^\n]");
-    fscanf(fArqMST, " %*s %d", &dimension);
-    fscanf(fArqMST, " %*[^\n]");
-
-    int v1, v2;
-    while (fscanf(fArqMST, "%d %d", &v1, &v2) == 2) 
-    {
-        tVertice * ver1 = getVertice(grafo, v1 - 1);
-        tVertice * ver2 = getVertice(grafo, v2 - 1);
-
-        float x = getX(ver1) - getX(ver2);
-        float y = getY(ver1) - getY(ver2);
-        float peso = sqrt(x * x + y * y);
-
-        pesoProfessorMST += peso;
-        printf("\npesoProfessorMST: %f\n", pesoProfessorMST);
-    }
-
-    fclose(fArqMST);
+    FILE * fMST = fopen("./teste.txt", "w");
+    fprintf(fMST, "NAME: %s\n", name);
+    fprintf(fMST, "TYPE: MST\n", name);
 
     // De acordo com o algoritmo disponível em 
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tUF * MST = kruskalAlgorithm(grafo);
+    tUF * MST = kruskalAlgorithm(grafo, fMST);
+
+
+    fclose(fMST);
 
     freeUnionFind(MST);
     freeGrafo(grafo);
