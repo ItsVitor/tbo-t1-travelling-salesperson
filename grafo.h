@@ -89,7 +89,7 @@ void sortArestas(tGrafo *grafo);
 
 void imprimeArestas(tGrafo * grafo);
 
-tUF * kruskalAlgorithm(tGrafo * grafo, FILE * wFile); 
+tAresta ** kruskalAlgorithm(tGrafo * grafo, FILE * outFileMST, FILE * outFileTour); 
 
 // Funções getters e setters (Grafo)
 

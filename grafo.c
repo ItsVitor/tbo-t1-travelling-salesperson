@@ -27,6 +27,8 @@ struct stAresta
     int v1;     // Índice do vértice de origem
     int v2;     // Índice do vértice de destino
     float dist; // Peso ou Distância
+    int percorrida; // Marca quantas vezes a aresta foi percorrida 
+    // (serve para ajudar no cálculo do tour)
 };
 
 // ---------------------------- Funções ---------------------------- //
@@ -36,6 +38,9 @@ struct stAresta
 static void freeVertices(tGrafo *grafo);
 static void freeArestas(tGrafo *grafo);
 static int compAresta(const void *aresta_1, const void *aresta_2);
+static void imprimeVetor(int * vetor, int N, FILE * fOut);
+static void insereVetor(int * vetor, int N, int elem);
+static void inverteVetor(int * vetor, int N);
 
 // =========== Funções do Grafo =========== //
 
@@ -117,12 +122,17 @@ int root(tGrafo *grafo, int indice)
  * @pre 
  * @post 
  */
-tUF * kruskalAlgorithm(tGrafo * grafo, FILE * wFile) 
+tAresta ** kruskalAlgorithm(tGrafo * grafo, FILE * outFileMST, FILE * outFileTour) 
 {
-    tUF * F = InitUnionFind(grafo->sizeVertices);
+    int size = grafo->sizeVertices;
+
+    tUF * F = InitUnionFind(size);
     tAresta ** S = grafo->arestas;
 
-    int i = 0;
+    // A MST é um vetor de arestas que serão salvas durante a execução do algoritmo
+    tAresta ** MST = (tAresta**) malloc(sizeof(tAresta*) * (grafo->sizeVertices - 1));
+
+    int i = 0, j = 0;
     float pesoTotalMST = 0;
     while(/* !isEmpty(S) */ i < getSizeArestas(grafo) && !isSpanning(F))
     {
@@ -130,12 +140,14 @@ tUF * kruskalAlgorithm(tGrafo * grafo, FILE * wFile)
         if (!IsConnected(F, menorAresta->v1, menorAresta->v2))
         {
             Union(F, menorAresta->v1, menorAresta->v2);
-            fprintf(wFile, "%d %d\n", menorAresta->v1 + 1, menorAresta->v2 + 1);
+            MST[j++] = menorAresta;
+
+            fprintf(outFileMST, "%d %d\n", menorAresta->v1 + 1, menorAresta->v2 + 1);
             pesoTotalMST += menorAresta->dist;
         }
     }
-
-    return F;
+    
+    return MST;
 }
 
 // =========== Funções da Aresta =========== //
@@ -155,6 +167,7 @@ tAresta *initAresta(tGrafo *grafo, int indice1, int indice2)
     float y = getY(v1) - getY(v2);
 
     aresta->dist = sqrt(x * x + y * y);
+    aresta->percorrida = 0;
 
     return aresta;
 }

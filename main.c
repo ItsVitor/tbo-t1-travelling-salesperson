@@ -7,12 +7,39 @@
 
 void readFileHeader(FILE *arq, tGrafo *grafo, char *name, int *dimension);
 
+static void imprimeVetor(int * vetor, int N, FILE * fOut){
+    for (int i = 0; i < N; i++){
+        fprintf(fOut, "%d\n", vetor[i]);
+    }
+}
+
+// Insere um elemento se ele ainda não estiver no vetor
+static void insereVetor(int * vetor, int N, int elem){
+    for (int i = 0; i < N; i++){
+        if (vetor[i] == 0) {
+            vetor[i] = elem;
+            return;
+        }
+        else if (vetor[i] == elem) return;
+    }
+}
+
+static void inverteVetor(int * vetor, int N){
+    int aux;
+    for (int i = 0; i < N / 2; i++){
+        aux = vetor[i];
+        vetor[i] = vetor[N - 1 - i];
+        vetor[N - 1 - i] = aux;
+    } 
+}
+
 int main()
 {
     char name[50];
     int dimension = 0;
-
-    char path[] = "exemplos/in/berlin52.tsp";
+    char path[] = "exemplos/in/";
+    char example_name[] = "berlin52";
+    strcat(strcat(path, example_name), ".tsp");
 
     FILE *arq = fopen(path, "r");
 
@@ -63,18 +90,68 @@ int main()
 
     // ------------------------- (Execução do Algoritmo)------------------------- //
 
-    FILE * fMST = fopen("./teste.txt", "w");
+    char path_out[] = "exemplos/out/";
+    strcat(strcat(path_out, name), ".mst");
+    FILE * fMST = fopen(path_out, "w");
     fprintf(fMST, "NAME: %s\n", name);
-    fprintf(fMST, "TYPE: MST\n", name);
+    fprintf(fMST, "TYPE: MST\n");
+    fprintf(fMST, "DIMENSION: %d\n", dimension);
+    fprintf(fMST, "MST_SECTION\n");
+
+    char path_out2[] = "exemplos/out/";
+    strcat(strcat(path_out2, name), ".tour");
+    FILE * fTour = fopen(path_out2, "w");
+    fprintf(fTour, "NAME: %s\n", name);
+    fprintf(fTour, "TYPE: TOUR\n");
+    fprintf(fTour, "DIMENSION: %d\n", dimension);
+    fprintf(fTour, "TOUR_SECTION\n");
 
     // De acordo com o algoritmo disponível em 
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tUF * MST = kruskalAlgorithm(grafo, fMST);
+    tAresta ** MST = kruskalAlgorithm(grafo, fMST, fTour);
+    
+    // Verificando se a MST foi gerada direitinho: Foi!
+    // for (int i = 0; i < getSizeVertices(grafo) - 1; i++) {
+    //     printf("v1: %d v2: %d\n", getV1(MST[i]), getV2(MST[i]));
+    // }
 
+    // Gerando o nosso TOUR
+    int tam = getSizeVertices(grafo);
+    int tour[tam];
+
+    insereVetor(tour, tam, getV1(MST[0]));
+    insereVetor(tour, tam, getV2(MST[0]));
+    IncPercorrido(MST[0]); // TODO
+    int vertAtual = getV2(MST[0]);
+    while (!TodoPercorrido(MST)) { // TODO
+        for (int i = 0; i < tam - 1; i++) {
+
+            // Para cada aresta
+            if (getPercorrido(MST[i]) < 2){ // TODO
+
+                int v1 = getV1(MST[i]);
+                int v2 = getV2(MST[i]);
+
+                if (vertAtual == v1) {
+                    insereVetor(tour, tam, v2);
+                    vertAtual = v2;
+                    IncPercorrido(MST[i]);
+                }
+                else if (vertAtual == v2) {
+                    insereVetor(tour, tam, v1);
+                    vertAtual = v1;
+                    IncPercorrido(MST[i]);
+                }
+            }
+        }
+    }
+    
+    fprintf(fMST, "EOF\n");
+    fprintf(fTour, "EOF\n");
 
     fclose(fMST);
-
-    freeUnionFind(MST);
+    fclose(fTour);
+    // Liberar MST depois!
     freeGrafo(grafo);
 
     return 0;
