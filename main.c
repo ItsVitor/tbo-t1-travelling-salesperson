@@ -38,7 +38,7 @@ int main()
     char name[50];
     int dimension = 0;
     char path[] = "exemplos/in/";
-    char example_name[] = "berlin52";
+    char example_name[] = "pr1002";
     strcat(strcat(path, example_name), ".tsp");
 
     FILE *arq = fopen(path, "r");
@@ -90,7 +90,7 @@ int main()
 
     // ------------------------- (Execução do Algoritmo)------------------------- //
 
-    char path_out[] = "exemplos/out/";
+    char path_out[50] = "exemplos/out/";
     strcat(strcat(path_out, name), ".mst");
     FILE * fMST = fopen(path_out, "w");
     fprintf(fMST, "NAME: %s\n", name);
@@ -98,7 +98,7 @@ int main()
     fprintf(fMST, "DIMENSION: %d\n", dimension);
     fprintf(fMST, "MST_SECTION\n");
 
-    char path_out2[] = "exemplos/out/";
+    char path_out2[50] = "exemplos/out/";
     strcat(strcat(path_out2, name), ".tour");
     FILE * fTour = fopen(path_out2, "w");
     fprintf(fTour, "NAME: %s\n", name);
@@ -158,7 +158,7 @@ int main()
                     incPercorrido(MST[i]);
                 }
                 else if (vertAtual == v2) {
-                    if (insereVetor(tour, tam, v1, insert_pos));
+                    if (insereVetor(tour, tam, v1, insert_pos))
                         insert_pos++;
                     if (insert_pos == tam) {
                         flag_continuar_caminhamento = 0;
@@ -174,7 +174,7 @@ int main()
 
     // Imprimir nosso tour no arquivo
     for (int i = 0; i < tam; i++){
-        fprintf(fTour, "%d\n", tour[i]);
+        fprintf(fTour, "%d\n", tour[i] + 1);
     }
     
     fprintf(fMST, "EOF\n");
