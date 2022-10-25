@@ -2,3 +2,6 @@
 *.exe
 *.o
 .vscode
+desuso
+exemplos/out/*.tour
+exemplos/out/*.mst

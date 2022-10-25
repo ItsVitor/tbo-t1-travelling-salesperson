@@ -89,7 +89,7 @@ void sortArestas(tGrafo *grafo);
 
 void imprimeArestas(tGrafo * grafo);
 
-tUF * kruskalAlgorithm(tGrafo * grafo); 
+tAresta ** kruskalAlgorithm(tGrafo * grafo, FILE * outFileMST, FILE * outFileTour); 
 
 // Funções getters e setters (Grafo)
 
@@ -226,6 +226,22 @@ void setV2(tAresta *aresta, int v2);
 void setDist(tAresta *aresta, float dist);
 
 /**
+ * @brief Incrementa a variável percorrida de aresta
+ *
+ * @param aresta Aresta a ser modificada
+ */
+void incPercorrido(tAresta * aresta);
+
+/**
+ * @brief Verifica se todas as arestas do vetor tem a variável "percorrida" igual a 2
+ *
+ * @param arestas Lista de arestas a ser verificada
+ * @param tam Quantidade de arestas na lista
+ * @return Retorna 1 se sim, retorna 0 se não
+ */
+int todoPercorrido(tAresta ** arestas, int tam);
+
+/**
  * @brief Pega a aresta na posição do vetor indicada
  *
  * @param grafo Grafo com o vetor de arestas
@@ -257,5 +273,13 @@ int getV2(tAresta *aresta);
  * @return float
  */
 float getDist(tAresta *aresta);
+
+/**
+ * @brief TODO TODO
+ *
+ * @param aresta TODO
+ * @return int
+ */
+int getPercorrido(tAresta * aresta);
 
 #endif
