@@ -14,14 +14,14 @@ static void imprimeVetor(int * vetor, int N, FILE * fOut){
 }
 
 // Insere um elemento se ele ainda não estiver no vetor
-static void insereVetor(int * vetor, int N, int elem){
-    for (int i = 0; i < N; i++){
-        if (vetor[i] == 0) {
-            vetor[i] = elem;
-            return;
+static int insereVetor(int * vetor, int N, int elem, int pos){
+    for (int i = 0; i < pos; i++){
+        if (vetor[i] == elem) {
+            return 0;
         }
-        else if (vetor[i] == elem) return;
     }
+    vetor[pos] = elem;
+    return 1;
 }
 
 static void inverteVetor(int * vetor, int N){
@@ -118,32 +118,63 @@ int main()
     // Gerando o nosso TOUR
     int tam = getSizeVertices(grafo);
     int tour[tam];
+    int insert_pos = 0;
 
-    insereVetor(tour, tam, getV1(MST[0]));
-    insereVetor(tour, tam, getV2(MST[0]));
-    IncPercorrido(MST[0]); // TODO
+    insereVetor(tour, tam, getV1(MST[0]), insert_pos);
+    insert_pos++;
+    insereVetor(tour, tam, getV2(MST[0]), insert_pos);
+    insert_pos++;
+    incPercorrido(MST[0]);
     int vertAtual = getV2(MST[0]);
-    while (!TodoPercorrido(MST)) { // TODO
-        for (int i = 0; i < tam - 1; i++) {
+    int flag_continuar_caminhamento = 1;
+    int i = 1;
+
+    int flagWhile = 0;
+    while (!todoPercorrido(MST, tam - 1) && flag_continuar_caminhamento) {
+
+        // printf("%d\n", flagWhile++);
+
+        for (int i = 0; i < insert_pos; i++) {
+            printf("%d ", tour[i] + 1);
+        }
+        printf("\n");
+
+        for (; i < tam - 1; i++) {
 
             // Para cada aresta
-            if (getPercorrido(MST[i]) < 2){ // TODO
+            if (getPercorrido(MST[i]) < 2){
 
                 int v1 = getV1(MST[i]);
                 int v2 = getV2(MST[i]);
 
                 if (vertAtual == v1) {
-                    insereVetor(tour, tam, v2);
+                    if (insereVetor(tour, tam, v2, insert_pos))
+                        insert_pos++;
+                    if (insert_pos == tam) {
+                        flag_continuar_caminhamento = 0;
+                        break;
+                    }
                     vertAtual = v2;
-                    IncPercorrido(MST[i]);
+                    incPercorrido(MST[i]);
                 }
                 else if (vertAtual == v2) {
-                    insereVetor(tour, tam, v1);
+                    if (insereVetor(tour, tam, v1, insert_pos));
+                        insert_pos++;
+                    if (insert_pos == tam) {
+                        flag_continuar_caminhamento = 0;
+                        break;
+                    }
                     vertAtual = v1;
-                    IncPercorrido(MST[i]);
+                    incPercorrido(MST[i]);
                 }
             }
         }
+        i = 0;
+    }
+
+    // Imprimir nosso tour no arquivo
+    for (int i = 0; i < tam; i++){
+        fprintf(fTour, "%d\n", tour[i]);
     }
     
     fprintf(fMST, "EOF\n");

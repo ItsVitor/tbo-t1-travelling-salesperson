@@ -385,9 +385,30 @@ void setDist(tAresta *aresta, float dist)
     aresta->dist = dist;
 }
 
+void incPercorrido(tAresta * aresta) {
+    aresta->percorrida++;
+}
+
+int todoPercorrido(tAresta ** arestas, int tam){
+    int percorrida_atual;
+    for (int i = 0; i < tam; i++){
+        percorrida_atual = getPercorrido(arestas[i]);
+        if (percorrida_atual < 2) return 0;
+        else if (percorrida_atual > 2) {
+            printf("percorrida_atual > 2: algo de muito errado aconteceu!\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    return 1;
+}
+
 float getDist(tAresta *aresta)
 {
     return aresta->dist;
+}
+
+int getPercorrido(tAresta * aresta){
+    return aresta->percorrida;
 }
 
 // Comentário secreto. Parabéns por chegar aqui.
