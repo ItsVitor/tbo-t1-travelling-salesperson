@@ -116,7 +116,7 @@ int main()
 
     // De acordo com o algoritmo disponível em
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tAresta **MST = kruskalAlgorithm(grafo, fMST, fTour);
+    tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour);
 
     // Verificando se a MST foi gerada direitinho: Foi!
     // for (int i = 0; i < getSizeVertices(grafo) - 1; i++) {
@@ -128,12 +128,14 @@ int main()
     int tour[tam];
     int insert_pos = 0;
 
-    insereVetor(tour, tam, getV1(MST[0]), insert_pos);
+    tAresta *aresta = getAresta(MST, 0);
+
+    insereVetor(tour, tam, getV1(aresta), insert_pos);
     insert_pos++;
-    insereVetor(tour, tam, getV2(MST[0]), insert_pos);
+    insereVetor(tour, tam, getV2(aresta), insert_pos);
     insert_pos++;
-    incPercorrida(MST[0]);
-    int vertAtual = getV2(MST[0]);
+    incPercorrida(aresta);
+    int vertAtual = getV2(aresta);
     int flag_continuar_caminhamento = 1;
     int i = 1;
 
@@ -152,11 +154,11 @@ int main()
         {
 
             // Para cada aresta
-            if (getPercorrida(MST[i]) < 2)
+            if (getPercorrida(getAresta(MST, i)) < 2)
             {
 
-                int v1 = getV1(MST[i]);
-                int v2 = getV2(MST[i]);
+                int v1 = getV1(getAresta(MST, i));
+                int v2 = getV2(getAresta(MST, i));
 
                 if (vertAtual == v1)
                 {
@@ -168,7 +170,7 @@ int main()
                         break;
                     }
                     vertAtual = v2;
-                    incPercorrida(MST[i]);
+                    incPercorrida(getAresta(MST, i));
                 }
                 else if (vertAtual == v2)
                 {
@@ -180,7 +182,7 @@ int main()
                         break;
                     }
                     vertAtual = v1;
-                    incPercorrida(MST[i]);
+                    incPercorrida(getAresta(MST, i));
                 }
             }
         }
@@ -198,7 +200,9 @@ int main()
 
     fclose(fMST);
     fclose(fTour);
-    // Liberar MST depois!
+    // Liberar MST depois! - Liberada! :D
+
+    freeGrafo(MST);
     freeGrafo(grafo);
 
     return 0;

@@ -95,6 +95,7 @@ void reinitAresta(tGrafo *grafo, tAresta *aresta, int indice1, int indice2);
  *
  * @param grafo Grafo com os vértices
  * @pre Vetor de vértices completamente preenchido
+ * @pre Tamanho do vetor de arestas >= V(V-1)/2    (V = quantidade de vértices)
  * @post Vetor de arestas completamente preenchido
  */
 void initAllArestas(tGrafo *grafo);
@@ -108,7 +109,7 @@ void sortArestas(tGrafo *grafo);
 
 void imprimeArestas(tGrafo *grafo);
 
-tAresta **kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour);
+tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour);
 
 // Funções getters e setters (Grafo)
 
@@ -121,6 +122,17 @@ tAresta **kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour);
  * @post Tamanho de vetor de vértices e de arestas foram ajustados
  */
 void setSizeVertices(tGrafo *grafo, int size);
+
+/**
+ * @brief Define quantas arestas o grafo terá.
+ * @details Para quando não queremos usar vértices.
+ *
+ * @param grafo Grafo a ser modificado
+ * @param size Tamanho do vetor de arestas
+ * @pre Grafo não é NULL, size >= 0
+ * @post Tamanho de vetor de arestas foi ajustado.
+ */
+void setSizeArestas(tGrafo *grafo, int size);
 
 /**
  * @brief Pega a quantidade (máxima) de vértices do grafo
@@ -249,13 +261,13 @@ void incPercorrida(tAresta *aresta);
  * @param tam Quantidade de arestas na lista
  * @return Retorna 1 se sim, retorna 0 se não
  */
-int todoPercorrido(tAresta **arestas, int tam);
+int todoPercorrido(tGrafo *arestas, int tam);
 
 /**
  * @brief Pega a aresta na posição do vetor indicada
  *
  * @param grafo Grafo com o vetor de arestas
- * @param indice Posição do aresta
+ * @param indice Posição da aresta
  * @return tAresta*
  */
 tAresta *getAresta(tGrafo *grafo, int indice);

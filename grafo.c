@@ -13,6 +13,7 @@ struct stGrafo
     tAresta *arestas;
 
     int sizeVertices; // Máximo de elementos do vetor vertices
+    int sizeArestas;  // Máximo de elementos do vetor arestas
 };
 
 struct stVertice
@@ -46,6 +47,7 @@ tGrafo *initGrafo()
     tGrafo *grafo = (tGrafo *)malloc(sizeof(tGrafo));
 
     grafo->sizeVertices = 0;
+    grafo->sizeArestas = 0;
 
     // Anula tanto vetor vértice quanto vetor aresta
     grafo->vertices = NULL;
@@ -105,31 +107,40 @@ static void freeVertices(tGrafo *grafo)
  * @param grafo
  * @pre
  * @post
+ * @return tGrafo * (só com o vetor de arestas)
  */
-tAresta **kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
+tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
 {
     int size = getSizeVertices(grafo);
 
     tUF *F = InitUnionFind(size);
-    tAresta **S = grafo->arestas;
+    tGrafo *S = initGrafo();
+
+    // Todo o resto é NULL, o grafo é só um vetor de arestas.
+    S->arestas = grafo->arestas;
+    S->sizeArestas = getSizeArestas(grafo);
 
     // A MST é um vetor de arestas que serão salvas durante a execução do algoritmo
-    tAresta **MST = (tAresta **)malloc(sizeof(tAresta *) * (getSizeVertices(grafo) - 1));
+    tGrafo *MST = initGrafo();
+    setSizeArestas(MST, getSizeVertices(grafo) - 1);
 
     int i = 0, j = 0;
     float pesoTotalMST = 0;
     while (/* !isEmpty(S) */ i < getSizeArestas(grafo) && !isSpanning(F))
     {
-        tAresta *menorAresta = S[i++];
+        tAresta *menorAresta = getAresta(S, i++);
         if (!IsConnected(F, getV1(menorAresta), getV2(menorAresta)))
         {
             Union(F, getV1(menorAresta), getV2(menorAresta));
-            MST[j++] = menorAresta;
+            setAresta(MST, j++, menorAresta);
 
             fprintf(outFileMST, "%d %d\n", getV1(menorAresta) + 1, getV2(menorAresta) + 1);
             pesoTotalMST += getDist(menorAresta);
         }
     }
+
+    freeUnionFind(F);
+    freeGrafo(S);
 
     return MST;
 }
@@ -271,6 +282,22 @@ void setSizeVertices(tGrafo *grafo, int size)
     // Quantidade de arestas == Qtd_vértices*(Qtd_vértices - 1) / 2
     size = size * (size - 1) / 2;
 
+    grafo->sizeArestas = size;
+
+    if (size < 1)
+        freeArestas(grafo);
+
+    else if (grafo->arestas)
+        grafo->arestas = (tAresta *)realloc(grafo->arestas, size * sizeof(tAresta));
+
+    else
+        grafo->arestas = (tAresta *)calloc(size, sizeof(tAresta));
+}
+
+void setSizeArestas(tGrafo *grafo, int size)
+{
+    grafo->sizeArestas = size;
+
     if (size < 1)
         freeArestas(grafo);
 
@@ -288,12 +315,7 @@ int getSizeVertices(tGrafo *grafo)
 
 int getSizeArestas(tGrafo *grafo)
 {
-    int size = getSizeVertices(grafo);
-
-    // Quantidade de arestas == Qtd_vértices*(Qtd_vértices - 1) / 2
-    size = size * (size - 1) / 2;
-
-    return size;
+    return grafo->sizeArestas;
 }
 
 /******************** Parte simples de Getters e Setters abaixo ********************
@@ -406,15 +428,12 @@ void incPercorrida(tAresta *aresta)
     aresta->percorrida++;
 }
 
-/**
- * @todo É para essa entrada ser tAresta ** ?
- */
-int todoPercorrido(tAresta **arestas, int tam)
+int todoPercorrido(tGrafo *arestas, int tam)
 {
     int percorrida_atual;
     for (int i = 0; i < tam; i++)
     {
-        percorrida_atual = getPercorrida(arestas[i]);
+        percorrida_atual = getPercorrida(getAresta(arestas, i));
         if (percorrida_atual < 2)
             return 0;
         else if (percorrida_atual > 2)
