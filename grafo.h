@@ -144,7 +144,6 @@ int getSizeArestas(tGrafo *grafo);
 
 /**
  * @brief Muda o vértice na posição do vetor indicada
- * @details Coloca o próprio índice como pai
  *
  * @param grafo Grafo com o vetor de vértices
  * @param indice Posição a ser modificada
@@ -167,14 +166,6 @@ void setX(tVertice *vertice, float x);
  * @param y Nova coordenada y
  */
 void setY(tVertice *vertice, float y);
-
-/**
- * @brief Muda o pai do vértice
- *
- * @param vertice Vértice a ser modificado
- * @param pai Índice do novo pai
- */
-void setPai(tVertice *vertice, int pai);
 
 /**
  * @brief Pega o vértice na posição do vetor indicada
@@ -200,14 +191,6 @@ float getX(tVertice *vertice);
  * @return float
  */
 float getY(tVertice *vertice);
-
-/**
- * @brief Pega o índice do pai do vértice
- *
- * @param vertice Vértice com o pai
- * @return int
- */
-int getPai(tVertice *vertice);
 
 // Funções getters e setters (Aresta)
 

@@ -19,7 +19,6 @@ struct stVertice
 {
     float x;
     float y;
-    int pai; //Índice da lista de vértices que contém o pai dele.
 };
 
 struct stAresta
@@ -44,7 +43,9 @@ static int compAresta(const void *aresta_1, const void *aresta_2);
 
 tGrafo *initGrafo()
 {
-    tGrafo *grafo = (tGrafo *)calloc(1, sizeof(tGrafo));
+    tGrafo *grafo = (tGrafo *)malloc(sizeof(tGrafo));
+
+    grafo->sizeVertices = 0;
 
     // Anula tanto vetor vértice quanto vetor aresta
     grafo->vertices = NULL;
@@ -126,7 +127,7 @@ tAresta **kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
             MST[j++] = menorAresta;
 
             fprintf(outFileMST, "%d %d\n", getV1(menorAresta) + 1, getV2(menorAresta) + 1);
-            pesoTotalMST += menorAresta->dist;
+            pesoTotalMST += getDist(menorAresta);
         }
     }
 
@@ -308,7 +309,6 @@ void setVertice(tGrafo *grafo, int indice, tVertice *vertice)
 
     setX(vertice_antigo, getX(vertice));
     setY(vertice_antigo, getY(vertice));
-    setPai(vertice_antigo, indice);
 }
 
 tVertice *getVertice(tGrafo *grafo, int indice)
@@ -338,16 +338,6 @@ void setY(tVertice *vertice, float y)
 float getY(tVertice *vertice)
 {
     return vertice->y;
-}
-
-void setPai(tVertice *vertice, int pai)
-{
-    vertice->pai = pai;
-}
-
-int getPai(tVertice *vertice)
-{
-    return vertice->pai;
 }
 
 // ========= Getters e Setters da aresta ========= //
@@ -417,7 +407,7 @@ void incPercorrida(tAresta *aresta)
 }
 
 /**
- * @todo É para essa entrada ser tAresta **?
+ * @todo É para essa entrada ser tAresta ** ?
  */
 int todoPercorrido(tAresta **arestas, int tam)
 {
