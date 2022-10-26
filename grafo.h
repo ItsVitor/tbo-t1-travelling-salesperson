@@ -72,6 +72,25 @@ void freeAresta(tAresta *aresta);
 int root(tGrafo *grafo, int indice);
 
 /**
+ * @brief Muda todos os valores do vértice, de acordo com as novas entradas.
+ *
+ * @param vertice Vértice a ser modificado
+ * @param x Nova posição x
+ * @param y Nova posição y
+ */
+void reinitVertice(tVertice *vertice, float x, float y);
+
+/**
+ * @brief Muda todos os valores da aresta, de acordo com as novas entradas.
+ *
+ * @param grafo Grafo com os vértices novos
+ * @param aresta Aresta a ser modificada
+ * @param indice1 Índice do (novo) vértice origem
+ * @param indice2 Índice do (novo) vértice destino
+ */
+void reinitAresta(tGrafo *grafo, tAresta *aresta, int indice1, int indice2);
+
+/**
  * @brief Cria todas as arestas possíveis do grafo
  *
  * @param grafo Grafo com os vértices
@@ -87,9 +106,9 @@ void initAllArestas(tGrafo *grafo);
  */
 void sortArestas(tGrafo *grafo);
 
-void imprimeArestas(tGrafo * grafo);
+void imprimeArestas(tGrafo *grafo);
 
-tAresta ** kruskalAlgorithm(tGrafo * grafo, FILE * outFileMST, FILE * outFileTour); 
+tAresta **kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour);
 
 // Funções getters e setters (Grafo)
 
@@ -226,11 +245,19 @@ void setV2(tAresta *aresta, int v2);
 void setDist(tAresta *aresta, float dist);
 
 /**
+ * @brief Muda quantas vezes a aresta foi percorrida
+ *
+ * @param aresta Aresta a ser modificada
+ * @param percorrida Quantas vezes foi percorrida
+ */
+void setPercorrida(tAresta *aresta, int percorrida);
+
+/**
  * @brief Incrementa a variável percorrida de aresta
  *
  * @param aresta Aresta a ser modificada
  */
-void incPercorrido(tAresta * aresta);
+void incPercorrida(tAresta *aresta);
 
 /**
  * @brief Verifica se todas as arestas do vetor tem a variável "percorrida" igual a 2
@@ -239,7 +266,7 @@ void incPercorrido(tAresta * aresta);
  * @param tam Quantidade de arestas na lista
  * @return Retorna 1 se sim, retorna 0 se não
  */
-int todoPercorrido(tAresta ** arestas, int tam);
+int todoPercorrido(tAresta **arestas, int tam);
 
 /**
  * @brief Pega a aresta na posição do vetor indicada
@@ -275,11 +302,11 @@ int getV2(tAresta *aresta);
 float getDist(tAresta *aresta);
 
 /**
- * @brief TODO TODO
+ * @brief Pega quantas vezes a aresta foi percorrida
  *
- * @param aresta TODO
+ * @param aresta Aresta que foi percorrida
  * @return int
  */
-int getPercorrido(tAresta * aresta);
+int getPercorrida(tAresta *aresta);
 
 #endif

@@ -7,16 +7,21 @@
 
 void readFileHeader(FILE *arq, tGrafo *grafo, char *name, int *dimension);
 
-static void imprimeVetor(int * vetor, int N, FILE * fOut){
-    for (int i = 0; i < N; i++){
+static void imprimeVetor(int *vetor, int N, FILE *fOut)
+{
+    for (int i = 0; i < N; i++)
+    {
         fprintf(fOut, "%d\n", vetor[i]);
     }
 }
 
 // Insere um elemento se ele ainda não estiver no vetor
-static int insereVetor(int * vetor, int N, int elem, int pos){
-    for (int i = 0; i < pos; i++){
-        if (vetor[i] == elem) {
+static int insereVetor(int *vetor, int N, int elem, int pos)
+{
+    for (int i = 0; i < pos; i++)
+    {
+        if (vetor[i] == elem)
+        {
             return 0;
         }
     }
@@ -24,13 +29,15 @@ static int insereVetor(int * vetor, int N, int elem, int pos){
     return 1;
 }
 
-static void inverteVetor(int * vetor, int N){
+static void inverteVetor(int *vetor, int N)
+{
     int aux;
-    for (int i = 0; i < N / 2; i++){
+    for (int i = 0; i < N / 2; i++)
+    {
         aux = vetor[i];
         vetor[i] = vetor[N - 1 - i];
         vetor[N - 1 - i] = aux;
-    } 
+    }
 }
 
 int main()
@@ -65,8 +72,8 @@ int main()
     // --------------------- Lê os vértices do arquivo --------------------- //
 
     tGrafo *grafo = initGrafo();
+    tVertice *vertice = initVertice(0, 0);
     float x = 0, y = 0;
-    tVertice *v;
 
     setSizeVertices(grafo, dimension);
 
@@ -74,11 +81,12 @@ int main()
     {
         fscanf(arq, " %*s %f %f\n", &x, &y);
 
-        v = initVertice(x, y);
+        reinitVertice(vertice, x, y);
 
-        setVertice(grafo, i, v);
+        setVertice(grafo, i, vertice);
     }
 
+    freeVertice(vertice);
     fclose(arq);
 
     // -------------------------(Término da leitura)------------------------- //
@@ -92,7 +100,7 @@ int main()
 
     char path_out[50] = "exemplos/out/";
     strcat(strcat(path_out, name), ".mst");
-    FILE * fMST = fopen(path_out, "w");
+    FILE *fMST = fopen(path_out, "w");
     fprintf(fMST, "NAME: %s\n", name);
     fprintf(fMST, "TYPE: MST\n");
     fprintf(fMST, "DIMENSION: %d\n", dimension);
@@ -100,16 +108,16 @@ int main()
 
     char path_out2[50] = "exemplos/out/";
     strcat(strcat(path_out2, name), ".tour");
-    FILE * fTour = fopen(path_out2, "w");
+    FILE *fTour = fopen(path_out2, "w");
     fprintf(fTour, "NAME: %s\n", name);
     fprintf(fTour, "TYPE: TOUR\n");
     fprintf(fTour, "DIMENSION: %d\n", dimension);
     fprintf(fTour, "TOUR_SECTION\n");
 
-    // De acordo com o algoritmo disponível em 
+    // De acordo com o algoritmo disponível em
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tAresta ** MST = kruskalAlgorithm(grafo, fMST, fTour);
-    
+    tAresta **MST = kruskalAlgorithm(grafo, fMST, fTour);
+
     // Verificando se a MST foi gerada direitinho: Foi!
     // for (int i = 0; i < getSizeVertices(grafo) - 1; i++) {
     //     printf("v1: %d v2: %d\n", getV1(MST[i]), getV2(MST[i]));
@@ -124,48 +132,55 @@ int main()
     insert_pos++;
     insereVetor(tour, tam, getV2(MST[0]), insert_pos);
     insert_pos++;
-    incPercorrido(MST[0]);
+    incPercorrida(MST[0]);
     int vertAtual = getV2(MST[0]);
     int flag_continuar_caminhamento = 1;
     int i = 1;
 
     int flagWhile = 0;
-    while (!todoPercorrido(MST, tam - 1) && flag_continuar_caminhamento) {
+    while (!todoPercorrido(MST, tam - 1) && flag_continuar_caminhamento)
+    {
 
         // printf("%d\n", flagWhile++);
 
-        for (int i = 0; i < insert_pos; i++) {
+        /*for (int i = 0; i < insert_pos; i++) {
             printf("%d ", tour[i] + 1);
         }
-        printf("\n");
+        printf("\n");*/
 
-        for (; i < tam - 1; i++) {
+        for (; i < tam - 1; i++)
+        {
 
             // Para cada aresta
-            if (getPercorrido(MST[i]) < 2){
+            if (getPercorrida(MST[i]) < 2)
+            {
 
                 int v1 = getV1(MST[i]);
                 int v2 = getV2(MST[i]);
 
-                if (vertAtual == v1) {
+                if (vertAtual == v1)
+                {
                     if (insereVetor(tour, tam, v2, insert_pos))
                         insert_pos++;
-                    if (insert_pos == tam) {
+                    if (insert_pos == tam)
+                    {
                         flag_continuar_caminhamento = 0;
                         break;
                     }
                     vertAtual = v2;
-                    incPercorrido(MST[i]);
+                    incPercorrida(MST[i]);
                 }
-                else if (vertAtual == v2) {
+                else if (vertAtual == v2)
+                {
                     if (insereVetor(tour, tam, v1, insert_pos))
                         insert_pos++;
-                    if (insert_pos == tam) {
+                    if (insert_pos == tam)
+                    {
                         flag_continuar_caminhamento = 0;
                         break;
                     }
                     vertAtual = v1;
-                    incPercorrido(MST[i]);
+                    incPercorrida(MST[i]);
                 }
             }
         }
@@ -173,10 +188,11 @@ int main()
     }
 
     // Imprimir nosso tour no arquivo
-    for (int i = 0; i < tam; i++){
+    for (int i = 0; i < tam; i++)
+    {
         fprintf(fTour, "%d\n", tour[i] + 1);
     }
-    
+
     fprintf(fMST, "EOF\n");
     fprintf(fTour, "EOF\n");
 
