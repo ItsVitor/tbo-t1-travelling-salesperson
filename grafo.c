@@ -44,7 +44,7 @@ static int compAresta(const void *aresta_1, const void *aresta_2);
 
 tGrafo *initGrafo()
 {
-    tGrafo *grafo = (tGrafo *)malloc(sizeof(tGrafo));
+    tGrafo *grafo = (tGrafo *) malloc(sizeof(tGrafo));
 
     grafo->sizeVertices = 0;
     grafo->sizeArestas = 0;
@@ -60,7 +60,6 @@ void freeGrafo(tGrafo *grafo)
 {
     freeVertices(grafo);
     freeArestas(grafo);
-
     free(grafo);
 }
 
@@ -132,7 +131,8 @@ tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
         if (!IsConnected(F, getV1(menorAresta), getV2(menorAresta)))
         {
             Union(F, getV1(menorAresta), getV2(menorAresta));
-            setAresta(MST, j++, menorAresta);
+            // setAresta(MST, j++, menorAresta); // Mudei isso para o que está abaixo para ver se melhorava
+            MST->arestas[j++] = *menorAresta;
 
             fprintf(outFileMST, "%d %d\n", getV1(menorAresta) + 1, getV2(menorAresta) + 1);
             pesoTotalMST += getDist(menorAresta);
@@ -140,7 +140,7 @@ tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
     }
 
     freeUnionFind(F);
-    freeGrafo(S);
+    free(S);
 
     return MST;
 }

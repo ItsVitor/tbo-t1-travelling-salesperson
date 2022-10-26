@@ -29,23 +29,12 @@ static int insereVetor(int *vetor, int N, int elem, int pos)
     return 1;
 }
 
-static void inverteVetor(int *vetor, int N)
-{
-    int aux;
-    for (int i = 0; i < N / 2; i++)
-    {
-        aux = vetor[i];
-        vetor[i] = vetor[N - 1 - i];
-        vetor[N - 1 - i] = aux;
-    }
-}
-
 int main()
 {
     char name[50];
     int dimension = 0;
     char path[] = "exemplos/in/";
-    char example_name[] = "pr1002";
+    char example_name[] = "d18512";
     strcat(strcat(path, example_name), ".tsp");
 
     FILE *arq = fopen(path, "r");
@@ -71,12 +60,14 @@ int main()
 
     // --------------------- Lê os vértices do arquivo --------------------- //
 
+    printf("inicio leitura\n");
     tGrafo *grafo = initGrafo();
     tVertice *vertice = initVertice(0, 0);
     float x = 0, y = 0;
 
     setSizeVertices(grafo, dimension);
 
+    printf("vertices\n");
     for (int i = 0; i < dimension; i++)
     {
         fscanf(arq, " %*s %f %f\n", &x, &y);
@@ -84,12 +75,11 @@ int main()
         reinitVertice(vertice, x, y);
 
         setVertice(grafo, i, vertice);
+        // printf("%f %d\n", getX(vertice), i);
     }
 
     freeVertice(vertice);
     fclose(arq);
-
-    // -------------------------(Término da leitura)------------------------- //
 
     initAllArestas(grafo);
     sortArestas(grafo);
@@ -116,7 +106,8 @@ int main()
 
     // De acordo com o algoritmo disponível em
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour);
+    tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour); 
+    // TODO: por que agora a MST é um tGrafo e não um vetor de tArestas?
 
     // Verificando se a MST foi gerada direitinho: Foi!
     // for (int i = 0; i < getSizeVertices(grafo) - 1; i++) {
