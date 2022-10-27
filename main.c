@@ -29,13 +29,13 @@ static int insereVetor(int *vetor, int N, int elem, int pos)
     return 1;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     char name[50];
     int dimension = 0;
+
     char path[] = "exemplos/in/";
-    char example_name[] = "d18512";
-    strcat(strcat(path, example_name), ".tsp");
+    strcat(path, argv[1]);
 
     FILE *arq = fopen(path, "r");
 
@@ -106,7 +106,7 @@ int main()
 
     // De acordo com o algoritmo disponível em
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
-    tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour); 
+    tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour);
     // TODO: por que agora a MST é um tGrafo e não um vetor de tArestas?
 
     // Verificando se a MST foi gerada direitinho: Foi!
