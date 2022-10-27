@@ -123,7 +123,7 @@ tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
         if (!IsConnected(F, getV1(menorAresta), getV2(menorAresta)))
         {
             Union(F, getV1(menorAresta), getV2(menorAresta));
-            // setAresta(MST, j++, menorAresta); // Mudei isso para o que está abaixo para ver se melhorava
+            
             MST->arestas[j++] = *menorAresta;
 
             fprintf(outFileMST, "%d %d\n", getV1(menorAresta) + 1, getV2(menorAresta) + 1);
