@@ -84,8 +84,6 @@ int main(int argc, char *argv[])
     initAllArestas(grafo);
     sortArestas(grafo);
 
-    // imprimeArestas(grafo);
-
     // ------------------------- (Execução do Algoritmo)------------------------- //
 
     char path_out[50] = "exemplos/out/";
@@ -107,12 +105,6 @@ int main(int argc, char *argv[])
     // De acordo com o algoritmo disponível em
     // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
     tGrafo *MST = kruskalAlgorithm(grafo, fMST, fTour);
-    // TODO: por que agora a MST é um tGrafo e não um vetor de tArestas?
-
-    // Verificando se a MST foi gerada direitinho: Foi!
-    // for (int i = 0; i < getSizeVertices(grafo) - 1; i++) {
-    //     printf("v1: %d v2: %d\n", getV1(MST[i]), getV2(MST[i]));
-    // }
 
     // Gerando o nosso TOUR
     int tam = getSizeVertices(grafo);
@@ -133,13 +125,6 @@ int main(int argc, char *argv[])
     int flagWhile = 0;
     while (!todoPercorrido(MST, tam - 1) && flag_continuar_caminhamento)
     {
-
-        // printf("%d\n", flagWhile++);
-
-        /*for (int i = 0; i < insert_pos; i++) {
-            printf("%d ", tour[i] + 1);
-        }
-        printf("\n");*/
 
         for (; i < tam - 1; i++)
         {
@@ -191,7 +176,6 @@ int main(int argc, char *argv[])
 
     fclose(fMST);
     fclose(fTour);
-    // Liberar MST depois! - Liberada! :D
 
     freeGrafo(MST);
     freeGrafo(grafo);
