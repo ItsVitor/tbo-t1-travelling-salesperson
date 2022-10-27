@@ -44,7 +44,7 @@ static int compAresta(const void *aresta_1, const void *aresta_2);
 
 tGrafo *initGrafo()
 {
-    tGrafo *grafo = (tGrafo *) malloc(sizeof(tGrafo));
+    tGrafo *grafo = (tGrafo *)malloc(sizeof(tGrafo));
 
     grafo->sizeVertices = 0;
     grafo->sizeArestas = 0;
@@ -100,14 +100,6 @@ static void freeVertices(tGrafo *grafo)
     grafo->vertices = NULL;
 }
 
-/**
- * @brief
- *
- * @param grafo
- * @pre
- * @post
- * @return tGrafo * (só com o vetor de arestas)
- */
 tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour)
 {
     int size = getSizeVertices(grafo);

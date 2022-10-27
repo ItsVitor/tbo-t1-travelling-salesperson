@@ -107,8 +107,19 @@ void initAllArestas(tGrafo *grafo);
  */
 void sortArestas(tGrafo *grafo);
 
+/**
+ * @brief Imprime todas as arestas no terminal.
+ *
+ * @param grafo Grafo com as arestas.
+ */
 void imprimeArestas(tGrafo *grafo);
 
+/**
+ * @brief Monta a MST
+ *
+ * @param grafo Grafo com todas as arestas
+ * @return tGrafo * (só com o vetor de arestas)
+ */
 tGrafo *kruskalAlgorithm(tGrafo *grafo, FILE *outFileMST, FILE *outFileTour);
 
 // Funções getters e setters (Grafo)
